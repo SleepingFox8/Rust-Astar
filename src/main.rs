@@ -65,7 +65,9 @@ fn main() {
         };
 
         let distance_between_nodes = |node1: &str, node2: &str| -> f64{
-            return distance_between_points(json[node1]["x"].as_i64().unwrap(),json[node1]["y"].as_i64().unwrap(),json[node1]["z"].as_i64().unwrap(), json[node2]["x"].as_i64().unwrap(),json[node2]["y"].as_i64().unwrap(),json[node2]["z"].as_i64().unwrap())
+            // println!("node1: {}",node1);
+            // println!("json[node1][\"x\"]: {:?}",json[node1]["x"].as_f64());
+            return distance_between_points(json[node1]["x"].as_f64().unwrap() as i64,json[node1]["y"].as_f64().unwrap() as i64,json[node1]["z"].as_f64().unwrap() as i64, json[node2]["x"].as_f64().unwrap() as i64,json[node2]["y"].as_f64().unwrap() as i64,json[node2]["z"].as_f64().unwrap() as i64)
         };
 
         ///returns cost_of_travel_between_nodes as a "u64" in miliseconds
@@ -89,18 +91,19 @@ fn main() {
         // println!("distance_between_points: {}", distance_between_points(1,1,1, 1,2,2));
         // println!("{}",json["0x0000B7E19F1B10894A0B99A4E81DE277"]["connections"].is_object());
         // print_type_of(&json["0x0000B7E19F1B10894A0B99A4E81DE277"]["connections"]);
-        println!("Neighbors: {:?}", get_neighbors("0x0000B7E19F1B10894A0B99A4E81DE277"));
-        println!("pathType: {}", pathtype_for_types(&"test".to_string(), &"normal".to_string()));
-        println!("pathtype_travel_speed(): {}", pathtype_travel_speed("normal").unwrap());
-        println!("get_successors: {:?}", get_successors("0x0000B7E19F1B10894A0B99A4E81DE277"));
+        // println!("Neighbors: {:?}", get_neighbors("0x0000B7E19F1B10894A0B99A4E81DE277"));
+        // println!("pathType: {}", pathtype_for_types(&"test".to_string(), &"normal".to_string()));
+        // println!("pathtype_travel_speed(): {}", pathtype_travel_speed("normal").unwrap());
+        // println!("get_successors: {:?}", get_successors("0x0000B7E19F1B10894A0B99A4E81DE277"));
 
     // declare destination nodeIDs
         let gensokyo_yuyu_hut = "0x0E4B93C652D6C3DF1DF377D1DFA1B33C";
         let gensokyo_cactus_farm = "0x00F936B150C8D7B0363B449FA45710F1";
+        let pandoria_station_underground = "0x4C4D4CB26FEBE14BAC7A6E4887BB7375";
 
     // pathfind
         // let result = astar(&Pos(1, 1), |p| p.neighbours(), |p| p.distance(&GOAL) / 3, |p| *p == GOAL);
-        let mut target = gensokyo_cactus_farm;
+        let mut target = pandoria_station_underground;
 
         let h = |node: &str| -> f64{
             let distance = distance_between_nodes(&node, &target);
