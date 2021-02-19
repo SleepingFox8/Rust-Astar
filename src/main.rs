@@ -76,9 +76,12 @@ fn main() {
         };
 
     // declare destination nodeIDs
-        let gensokyo_yuyu_hut = "0x0E4B93C652D6C3DF1DF377D1DFA1B33C";
-        let gensokyo_cactus_farm = "0x00F936B150C8D7B0363B449FA45710F1";
-        let pandoria_station_underground = "0x4C4D4CB26FEBE14BAC7A6E4887BB7375";
+        // starting point
+            let gensokyo_yuyu_hut = "0x0E4B93C652D6C3DF1DF377D1DFA1B33C";
+        // possible destinations
+            let gensokyo_cactus_farm = "0x00F936B150C8D7B0363B449FA45710F1";
+            let pandoria_station_underground = "0x4C4D4CB26FEBE14BAC7A6E4887BB7375";
+            let pandoria_station_surface = "0x101F51B31E1276E45FF42E0660198954";
 
     // pathfind
         let mut target = pandoria_station_underground;
