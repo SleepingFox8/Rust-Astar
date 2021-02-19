@@ -34,7 +34,7 @@
 fn main() {
 
     // retrieve json from file
-        let mut file = File::open("overworld/nodes.json").expect("Failed to open file");
+        let mut file = File::open("Public-CivClassic-Nodes/nodes.json").expect("Failed to open file");
         let mut contents = String::new();
         file.read_to_string(&mut contents).expect("Failed to read to string");
         let json: serde_json::Value = serde_json::from_str(&contents).expect("JSON was not well-formatted");
@@ -105,5 +105,5 @@ fn main() {
             |node| node == &target
         );
 
-
-        println!("result: {:?}", result)
+    println!("result: {:?}", result);
+}
