@@ -61,7 +61,7 @@ fn main() {
             }
         };
 
-        let pathtype_between_nodes = |node1: &String, node2: &String| -> String{
+        let pathtype_between_nodes = |node1: &str, node2: &str| -> String{
             pathtype_for_types(&json[node1]["pathType"].as_str().unwrap(), &json[node2]["pathType"].as_str().unwrap())
         };
 
@@ -73,7 +73,7 @@ fn main() {
 
         ///returns cost_of_travel_between_nodes as a "u64" in miliseconds
         let cost_of_travel_between_nodes = |node1: &str, node2: &str| -> u64{
-            return ((distance_between_nodes(node1, node2) / (pathtype_travel_speed(&pathtype_between_nodes(&node1.to_string(), &node2.to_string())).unwrap())) * 1000.0) as u64
+            return ((distance_between_nodes(node1, node2) / (pathtype_travel_speed(&pathtype_between_nodes(&node1, &node2)).unwrap())) * 1000.0) as u64
         };
 
     // declare destination nodeIDs
