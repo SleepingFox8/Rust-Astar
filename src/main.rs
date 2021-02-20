@@ -3,6 +3,7 @@
         use pathfinding::prelude::{astar}; // absdiff
         use std::fs::File;
         use std::io::prelude::*;
+        use std::time::{SystemTime, UNIX_EPOCH};
     // define constants
         // define player movement speeds
             const WALKING_SPEED: f64 = 4.317;
@@ -78,17 +79,20 @@ fn main() {
     // declare destination nodeIDs
         // starting point
             let gensokyo_yuyu_hut = "0x0E4B93C652D6C3DF1DF377D1DFA1B33C";
+            let bibelbonse = "0x410048838B8718F06D73AFCE00B9A8B1";
         // possible destinations
             let gensokyo_cactus_farm = "0x00F936B150C8D7B0363B449FA45710F1";
             let pandoria_station_underground = "0x4C4D4CB26FEBE14BAC7A6E4887BB7375";
             let pandoria_station_surface = "0x101F51B31E1276E45FF42E0660198954";
 
     // pathfind
+        let starting_node = bibelbonse;
         let mut target = pandoria_station_underground;
 
+        let start = SystemTime::now();
         let result = astar(
             // starting node
-            &gensokyo_yuyu_hut, 
+            &starting_node, 
             
             // get_successors()
             |node| -> Vec<(&str, u64)>{
@@ -108,5 +112,13 @@ fn main() {
             |node| node == &target
         );
 
+        let end = SystemTime::now();
+        let duration = end
+        .duration_since(start)
+        .expect("Time went backwards");
+        
     println!("result: {:?}", result);
+
+    println!("{:?}", duration);
+
 }
