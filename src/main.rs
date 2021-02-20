@@ -74,6 +74,15 @@ fn main() {
             return ((distance_between_nodes(node1, node2) / (pathtype_travel_speed(&pathtype_between_nodes(&node1, &node2)).unwrap())) * 1000.0) as u64
         };
 
+        let get_successors = |node: &str| -> Vec<(&str, u64)>{
+            let neighbors = get_neighbors(node);
+            let mut successors = Vec::new();
+            for neighbor in neighbors{
+                successors.push((&neighbor[..], cost_of_travel_between_nodes(node, neighbor) as u64));
+            }
+            return successors
+        };
+
     // declare destination nodeIDs
         // starting point
             let gensokyo_yuyu_hut = "0x0E4B93C652D6C3DF1DF377D1DFA1B33C";
@@ -87,32 +96,26 @@ fn main() {
         let starting_node = bibelbonse;
         let mut target = pandoria_station_underground;
 
-        let start = SystemTime::now();
+        let h = |node: &str| -> u64{
+            let distance = distance_between_nodes(&node, &target);
+            return (distance / SPRINT_JUMPING_ICE_SPEED * 1000.0) as u64
+        };
+
+        let start_time = SystemTime::now();
         let result = astar(
             // starting node
-            &starting_node, 
-            
+                &starting_node, 
             // get_successors()
-            |node| -> Vec<(&str, u64)>{
-                let neighbors = get_neighbors(node);
-                let mut successors = Vec::new();
-                for neighbor in neighbors{
-                    successors.push((&neighbor[..], cost_of_travel_between_nodes(node, neighbor) as u64));
-                }
-                return successors
-            },
+                |node|get_successors(node),
             // h()
-            |node| -> u64{
-                let distance = distance_between_nodes(&node, &target);
-                return (distance / SPRINT_JUMPING_ICE_SPEED * 1000.0) as u64
-            },
+                |node|h(node),
             // success()
-            |node| node == &target
+                |node| node == &target
         );
 
-        let end = SystemTime::now();
-        let duration = end
-        .duration_since(start)
+        let end_time = SystemTime::now();
+        let duration = end_time
+        .duration_since(start_time)
         .expect("Time went backwards");
         
     println!("result: {:?}", result);
