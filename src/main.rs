@@ -66,9 +66,7 @@ fn main() {
         };
 
         let distance_between_nodes = |node1: &str, node2: &str| -> f64{
-            // println!("node1: {}",node1);
-            // println!("json[node1][\"x\"]: {:?}",json[node1]["x"].as_f64());
-            return distance_between_points(json[node1]["x"].as_f64().unwrap() as i64,json[node1]["y"].as_f64().unwrap() as i64,json[node1]["z"].as_f64().unwrap() as i64, json[node2]["x"].as_f64().unwrap() as i64,json[node2]["y"].as_f64().unwrap() as i64,json[node2]["z"].as_f64().unwrap() as i64)
+            return distance_between_points(json[node1]["x"].as_i64().unwrap(),json[node1]["y"].as_i64().unwrap(),json[node1]["z"].as_i64().unwrap(), json[node2]["x"].as_i64().unwrap(),json[node2]["y"].as_i64().unwrap(),json[node2]["z"].as_i64().unwrap())
         };
 
         ///returns cost_of_travel_between_nodes as a "u64" in miliseconds
