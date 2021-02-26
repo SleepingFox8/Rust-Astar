@@ -101,7 +101,7 @@ fn main() {
             let pandoria_station_underground = "0x4C4D4CB26FEBE14BAC7A6E4887BB7375";
             let pandoria_station_surface = "0x101F51B31E1276E45FF42E0660198954";
 
-    // pathfind
+    // pathfind  between two hardcoded points
         // let starting_node = bibelbonse;
         // let mut target = pandoria_station_underground;
 
