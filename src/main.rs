@@ -179,11 +179,16 @@ fn main() {
         // let (results_tx, results_rx) = mpsc::channel();
         let start_time = SystemTime::now();
 
+        let mut handles = Vec::new();
+
         // for loop
+        for (node_id, dest_name) in destinations.as_object().unwrap(){
 
-        // pathfind to destination and record time
+            let node_id = node_id.clone();
+            let dest_name = dest_name.clone();
+
             let arc_node_data2 = arc_node_data.clone();
-
+            // let results_tx1 = results_tx.clone();
             let handle = thread::spawn(move || {
 
                 // declare closures
@@ -239,8 +244,8 @@ fn main() {
                         let pandoria_station_surface = "0x101F51B31E1276E45FF42E0660198954";
 
                 // pathfind
-                    let starting_node = bibelbonse;
-                    let mut target = pandoria_station_underground;
+                    let starting_node = gensokyo_yuyu_hut;
+                    let mut target = &node_id;
 
                     let h = |node: &str| -> u64{
                         let distance = distance_between_nodes(&node, &target);
@@ -258,10 +263,25 @@ fn main() {
                             |node| node == &target
                     );
 
-                    // tx1.send(result).unwrap();
+                    println!("{:?}",dest_name);
+                    match result {
+                        Some(x) => println!("ETA: {}",x.1 / 1000 / 60),
+                        None => println!("ETA: [no path found]"),
+                    };
+
+                    // results_tx1.send(result).unwrap();
             });
+            handles.push(handle);
+        }
+        // drop(results_tx);
+
+        for handle in handles{
+            handle.join().unwrap();
+        }
         
-        handle.join().unwrap();
+        // for received in results_rx{
+        //     println!("{:?}",received);
+        // }
 
         let end_time = SystemTime::now();
         let duration = end_time
@@ -271,8 +291,5 @@ fn main() {
         // println!("result: {:?}", result);
         println!("{:?}", duration);
         
-        // for received in rx{
-        //     println!("{:?}",received);
-        // }
         // let duration = SystemTime::now().duration_since(start_time).expect("Time went backwards");
 }
