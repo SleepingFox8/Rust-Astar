@@ -1,5 +1,5 @@
 [package]
-name = "rust-AStar"
+name = "rust-astar"
 version = "0.1.0"
 authors = ["SleepingFox8 <SleepingFox8@gmail.com>"]
 edition = "2018"
