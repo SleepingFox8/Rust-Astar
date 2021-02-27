@@ -8,6 +8,8 @@
         use std::sync;
         use std::time::Duration;
         use std::sync::mpsc;
+        use threadpool::ThreadPool;
+        extern crate num_cpus;
     // define constants
         // define player movement speeds
             const WALKING_SPEED: f64 = 4.317;
@@ -173,6 +175,7 @@ fn main() {
 
         // println!("{:?}", duration);
     // multi-threaded pathfind to all destinations
+        let pool = ThreadPool::new(num_cpus::get());
         let arc_node_data = sync::Arc::new(node_data);
 
 
@@ -189,7 +192,7 @@ fn main() {
 
             let arc_node_data2 = arc_node_data.clone();
             let results_tx1 = results_tx.clone();
-            let handle = thread::spawn(move || {
+            let handle = pool.execute(move || {
 
                 // declare closures
 
