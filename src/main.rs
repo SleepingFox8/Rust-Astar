@@ -267,7 +267,13 @@ fn main() {
                     );
 
                     match result {
-                        Some(x) => results_tx1.send((dest_name,Some(x.1))).unwrap(),
+                        Some(x) => {
+                            let mut string_vec = Vec::new();
+                            for item in x.0{
+                                string_vec.push(String::from(item));
+                            }
+                            results_tx1.send((dest_name,Some((string_vec,x.1)))).unwrap()
+                        },
                         None => results_tx1.send((dest_name,None)).unwrap(),
                     };
             });
@@ -278,7 +284,10 @@ fn main() {
         for received in results_rx{
             println!("Destination: {}",received.0);
             match received.1 {
-                Some(x) => println!("ETA: {}",x / 1000 / 60),
+                Some(x) => {
+                    println!("ETA: {}",x.1 / 1000 / 60);
+                    // println!("Route: {:?}",x.0);
+                },
                 None => println!("ETA: [no path found]"),
             };
         }
