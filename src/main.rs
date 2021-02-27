@@ -176,7 +176,7 @@ fn main() {
         let arc_node_data = sync::Arc::new(node_data);
 
 
-        // let (results_tx, results_rx) = mpsc::channel();
+        let (results_tx, results_rx) = mpsc::channel();
         let start_time = SystemTime::now();
 
         let mut handles = Vec::new();
@@ -188,7 +188,7 @@ fn main() {
             let dest_name = dest_name.clone();
 
             let arc_node_data2 = arc_node_data.clone();
-            // let results_tx1 = results_tx.clone();
+            let results_tx1 = results_tx.clone();
             let handle = thread::spawn(move || {
 
                 // declare closures
@@ -263,25 +263,22 @@ fn main() {
                             |node| node == &target
                     );
 
-                    println!("{:?}",dest_name);
                     match result {
-                        Some(x) => println!("ETA: {}",x.1 / 1000 / 60),
-                        None => println!("ETA: [no path found]"),
+                        Some(x) => results_tx1.send((dest_name,Some(x.1))).unwrap(),
+                        None => results_tx1.send((dest_name,None)).unwrap(),
                     };
-
-                    // results_tx1.send(result).unwrap();
             });
             handles.push(handle);
         }
-        // drop(results_tx);
-
-        for handle in handles{
-            handle.join().unwrap();
-        }
+        drop(results_tx);
         
-        // for received in results_rx{
-        //     println!("{:?}",received);
-        // }
+        for received in results_rx{
+            println!("Destination: {}",received.0);
+            match received.1 {
+                Some(x) => println!("ETA: {}",x / 1000 / 60),
+                None => println!("ETA: [no path found]"),
+            };
+        }
 
         let end_time = SystemTime::now();
         let duration = end_time
