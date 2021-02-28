@@ -20,7 +20,7 @@
 
     // pathfinding related functions
         fn distance_between_points(x1:i64, y1:i64, z1:i64, x2:i64, y2:i64, z2:i64) -> f64{
-            return (((x1 - x2).pow(2) + (y1 - y2).pow(2) + (z1 - z2).pow(2)) as f64).powf(1.0/2.0);
+            (((x1 - x2).pow(2) + (y1 - y2).pow(2) + (z1 - z2).pow(2)) as f64).powf(1.0/2.0)
         }
 
         fn pathtype_travel_speed(pathtype: &str) -> Option<f64>{
@@ -176,8 +176,6 @@ fn main() {
         let (results_tx, results_rx) = mpsc::channel();
         let start_time = SystemTime::now();
 
-        let mut handles = Vec::new();
-
         // for loop
         for (node_id, dest_name) in destinations.as_object().unwrap(){
 
@@ -186,7 +184,7 @@ fn main() {
 
             let arc_node_data2 = arc_node_data.clone();
             let results_tx1 = results_tx.clone();
-            let handle = pool.execute(move || {
+            pool.execute(move || {
 
                 // declare closures
 
@@ -198,14 +196,14 @@ fn main() {
                             neighbors.push(neighbor)
                         }
 
-                        return neighbors
+                        neighbors
                     };
 
                     let pathtype_for_types = |type1: &str,type2: &str| -> String{
                         if type1 == type2 {
-                            return type1.to_string();
+                            type1.to_string()
                         }else{
-                            return "normal".to_string()
+                            "normal".to_string()
                         }
                     };
 
@@ -214,11 +212,11 @@ fn main() {
                     };
 
                     let distance_between_nodes = |node1: &str, node2: &str| -> f64{
-                        return distance_between_points(arc_node_data2[node1]["x"].as_i64().unwrap(),arc_node_data2[node1]["y"].as_i64().unwrap(),arc_node_data2[node1]["z"].as_i64().unwrap(), arc_node_data2[node2]["x"].as_i64().unwrap(),arc_node_data2[node2]["y"].as_i64().unwrap(),arc_node_data2[node2]["z"].as_i64().unwrap())
+                        distance_between_points(arc_node_data2[node1]["x"].as_i64().unwrap(),arc_node_data2[node1]["y"].as_i64().unwrap(),arc_node_data2[node1]["z"].as_i64().unwrap(), arc_node_data2[node2]["x"].as_i64().unwrap(),arc_node_data2[node2]["y"].as_i64().unwrap(),arc_node_data2[node2]["z"].as_i64().unwrap())
                     };
 
                     let cost_of_travel_between_nodes = |node1: &str, node2: &str| -> u64{
-                        return ((distance_between_nodes(node1, node2) / (pathtype_travel_speed(&pathtype_between_nodes(&node1, &node2)).unwrap())) * 1000.0) as u64
+                        ((distance_between_nodes(node1, node2) / (pathtype_travel_speed(&pathtype_between_nodes(&node1, &node2)).unwrap())) * 1000.0) as u64
                     };
 
                     let get_successors = |node: &str| -> Vec<(&str, u64)>{
@@ -227,7 +225,7 @@ fn main() {
                         for neighbor in neighbors{
                             successors.push((&neighbor[..], cost_of_travel_between_nodes(node, neighbor) as u64));
                         }
-                        return successors
+                        successors
                     };
 
                 // declare destination nodeIDs
@@ -245,7 +243,7 @@ fn main() {
 
                     let h = |node: &str| -> u64{
                         let distance = distance_between_nodes(&node, &target);
-                        return (distance / SPRINT_JUMPING_ICE_SPEED * 1000.0) as u64
+                        (distance / SPRINT_JUMPING_ICE_SPEED * 1000.0) as u64
                     };
 
                     let result = astar(
@@ -256,7 +254,7 @@ fn main() {
                         // h()
                             |node|h(node),
                         // success()
-                            |node| node == &target
+                            |node| node == target
                     );
 
                     match result {
@@ -270,7 +268,6 @@ fn main() {
                         None => results_tx1.send((dest_name,None)).unwrap(),
                     };
             });
-            handles.push(handle);
         }
         drop(results_tx);
         
