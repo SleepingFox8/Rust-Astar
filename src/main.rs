@@ -289,6 +289,4 @@ fn main() {
 
         // println!("result: {:?}", result);
         println!("{:?}", duration);
-        
-        // let duration = SystemTime::now().duration_since(start_time).expect("Time went backwards");
 }
