@@ -275,7 +275,7 @@ fn main() {
             println!("Destination: {}",received.0);
             match received.1 {
                 Some(x) => {
-                    println!("ETA: {}",x.1 / 1000 / 60);
+                    println!("ETA: {} minutes",x.1 / 1000 / 60);
                     // println!("Route: {:?}",x.0);
                 },
                 None => println!("ETA: [no path found]"),
