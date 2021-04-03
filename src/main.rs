@@ -54,7 +54,7 @@ fn main() {
         let (results_tx, results_rx) = mpsc::channel();
         let start_time = SystemTime::now();
 
-        // for loop
+        // tell threadpool to pathfind to all destinations
         for (node_id, dest_name) in destinations.as_object().unwrap(){
 
             let node_id = node_id.clone();
@@ -149,6 +149,7 @@ fn main() {
         }
         drop(results_tx);
         
+        // print out pathfinding results until channel is closed
         for received in results_rx{
             println!("Destination: {}",received.0);
             match received.1 {
@@ -160,11 +161,11 @@ fn main() {
             };
         }
 
-        let end_time = SystemTime::now();
-        let duration = end_time
-        .duration_since(start_time)
-        .expect("Time went backwards");
+        // print time it took to pathfind to all destinations
+            let end_time = SystemTime::now();
+            let duration = end_time
+            .duration_since(start_time)
+            .expect("Time went backwards");
 
-        // println!("result: {:?}", result);
-        println!("{:?}", duration);
+            println!("{:?}", duration);
 }
