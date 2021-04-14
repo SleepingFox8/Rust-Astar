@@ -54,7 +54,7 @@ fn main() {
         let (results_tx, results_rx) = mpsc::channel();
         let start_time = SystemTime::now();
 
-        // for loop
+        // pathfind to every destination
         for (node_id, dest_name) in destinations.as_object().unwrap(){
 
             let node_id = node_id.clone();
@@ -165,6 +165,6 @@ fn main() {
         .duration_since(start_time)
         .expect("Time went backwards");
 
-        // println!("result: {:?}", result);
-        println!("{:?}", duration);
+        println!("=====");
+        println!("Completed pathfinding to {} destinations in {:?} seconds",destinations.as_object().unwrap().len(), duration);
 }
