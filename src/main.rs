@@ -87,7 +87,7 @@ fn main() {
                     };
 
                     let pathtype_between_nodes = |node1: &str, node2: &str| -> String{
-                        pathtype_for_types(&arc_node_data2[node1]["pathType"].as_str().unwrap(), &arc_node_data2[node2]["pathType"].as_str().unwrap())
+                        pathtype_for_types(arc_node_data2[node1]["pathType"].as_str().unwrap(), arc_node_data2[node2]["pathType"].as_str().unwrap())
                     };
 
                     let distance_between_nodes = |node1: &str, node2: &str| -> f64{
@@ -95,7 +95,7 @@ fn main() {
                     };
 
                     let cost_of_travel_between_nodes = |node1: &str, node2: &str| -> u64{
-                        ((distance_between_nodes(node1, node2) / (pathtype_travel_speed(&pathtype_between_nodes(&node1, &node2)).unwrap())) * 1000.0) as u64
+                        ((distance_between_nodes(node1, node2) / (pathtype_travel_speed(&pathtype_between_nodes(node1, node2)).unwrap())) * 1000.0) as u64
                     };
 
                     let get_successors = |node: &str| -> Vec<(&str, u64)>{
@@ -121,7 +121,7 @@ fn main() {
                     let target = &node_id;
 
                     let h = |node: &str| -> u64{
-                        let distance = distance_between_nodes(&node, &target);
+                        let distance = distance_between_nodes(node, target);
                         (distance / SPRINT_JUMPING_ICE_SPEED * 1000.0) as u64
                     };
 
